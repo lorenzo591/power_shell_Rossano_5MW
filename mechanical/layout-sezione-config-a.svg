@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="839.6000000000001" height="360.0" font-family="Helvetica,Arial,sans-serif" font-size="12">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<line x1="10" y1="320.0" x2="829.6000000000001" y2="320.0" stroke="#1b2631" stroke-width="3"/>
+<text x="14" y="336.0">Ponte TLP (circa +5 m sul mare in esercizio)</text>
+<rect x="80.0" y="198.16" width="97.52000000000001" height="115.84" fill="#c8d6e5" stroke="#1b2631"/>
+<text x="128.76" y="256.08" text-anchor="middle">trafo+CDU</text>
+<rect x="80.0" y="82.32" width="97.52000000000001" height="115.84" fill="#a9cce3" stroke="#1b2631"/>
+<text x="128.76" y="140.24" text-anchor="middle">IT</text>
+<rect x="225.51999999999998" y="198.16" width="97.52000000000001" height="115.84" fill="#c8d6e5" stroke="#1b2631"/>
+<text x="274.28" y="256.08" text-anchor="middle">trafo+CDU</text>
+<rect x="225.51999999999998" y="82.32" width="97.52000000000001" height="115.84" fill="#a9cce3" stroke="#1b2631"/>
+<text x="274.28" y="140.24" text-anchor="middle">IT</text>
+<rect x="371.03999999999996" y="198.16" width="97.52000000000001" height="115.84" fill="#c8d6e5" stroke="#1b2631"/>
+<text x="419.79999999999995" y="256.08" text-anchor="middle">trafo+CDU</text>
+<rect x="371.03999999999996" y="82.32" width="97.52000000000001" height="115.84" fill="#a9cce3" stroke="#1b2631"/>
+<text x="419.79999999999995" y="140.24" text-anchor="middle">IT</text>
+<rect x="516.56" y="198.16" width="97.52000000000001" height="115.84" fill="#c8d6e5" stroke="#1b2631"/>
+<text x="565.3199999999999" y="256.08" text-anchor="middle">trafo+CDU</text>
+<rect x="516.56" y="82.32" width="97.52000000000001" height="115.84" fill="#a9cce3" stroke="#1b2631"/>
+<text x="565.3199999999999" y="140.24" text-anchor="middle">IT</text>
+<rect x="662.0799999999999" y="198.16" width="97.52000000000001" height="115.84" fill="#f6d7a7" stroke="#1b2631"/>
+<text x="710.8399999999999" y="256.08" text-anchor="middle">HX+pompe</text>
+<rect x="662.0799999999999" y="82.32" width="97.52000000000001" height="115.84" fill="#f6d7a7" stroke="#1b2631"/>
+<text x="710.8399999999999" y="140.24" text-anchor="middle">MT+ctrl</text>
+<line x1="30" y1="58.31999999999999" x2="809.6000000000001" y2="58.31999999999999" stroke="#7f8c8d" stroke-width="4"/>
+<text x="40" y="52.31999999999999">Tettoia parasole / telaio superiore</text>
+</svg>
