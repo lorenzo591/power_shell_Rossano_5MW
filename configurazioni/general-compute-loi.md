@@ -1,6 +1,6 @@
 # Opzioni della LOI General Compute: densità e massa sul ponte da 5 MW
 
-- Revisione: A (2026-10-15). Prima versione.
+- Revisione: B (2026-10-15). Aggiunta la §5 su prezzi e token per kW.
 - Numeri: [`calcs/risultati-general-compute.md`](../calcs/risultati-general-compute.md), generati da [`calcs/general_compute_loi.py`](../calcs/general_compute_loi.py) con le stesse funzioni di [`dimensionamento_5mw.py`](../calcs/dimensionamento_5mw.py).
 - Dati dei rack: schede prodotto su [generalcompute.com](https://www.generalcompute.com/) (consultato 2026-10-15). Masse dei rack, potenza del rack d-Matrix e quota al liquido Cerebras sono **ipotesi n.v.**
 - Ipotesi di concept, come il resto del repo.
@@ -53,3 +53,43 @@ Come leggere la scomposizione: solo la riga "Rack IT" dipende dal prodotto. Tutt
 2. Potenza di picco (non media) dei rack SN50 e d-Matrix.
 3. Cerebras CS-3: temperatura e portata dell'acqua di impianto, quota di calore all'aria, massa del rack.
 4. Prestazioni in tok/s per kW sul modello di riferimento: a 5 MW conta quanto si produce per kW, non per rack.
+
+## 5. Prezzi e token per kW (indagine di mercato, 2026-10-15)
+
+Dati di mercato, non di progetto: **nessuno è un'offerta**, tutti n.v. Le fonti misurano cose diverse (modello, lunghezza dei prompt, precisione, versione del software), quindi i confronti valgono come ordine di grandezza.
+
+### 5.1 Prezzo dell'hardware per kW
+
+| Sistema | Prezzo stimato | kW | $/kW | Fonte |
+|---|---|---|---|---|
+| GB300 NVL72 (72 GPU) | 4,0–5,0 M$ (stime giornalistiche fino a 6–6,5 M$) | ~140 | **29–36 k$** (fino a ~45 k$) | Morgan Stanley (costo dei componenti, via LinkedIn); ordini piccoli (Data Gravity) |
+| Rack HGX B300 (16 GPU) | 1,2 M$ | 28 | 43 k$ | Calcolatore TCO di GC |
+| Cerebras CS-3 | 2,6 M$ | 46 | 57 k$ | Calcolatore TCO di GC (non chiaro se per sistema o per rack) |
+| SambaNova SN50 (rack) | 1,6 M$ (noleggio 95 k$/mese) | 19–20 | 80–84 k$ | Calcolatore TCO di GC |
+| Positron Atlas (server) | 175 k$ | 1,8–2 | 88–97 k$ | Positron |
+| d-Matrix SquadRack | non pubblico | ~45 | – | – |
+
+### 5.2 Token prodotti per kW (tok/s per kW IT)
+
+Dipende soprattutto dalla **velocità per utente** richiesta (tok/s/utente): le GPU servono molti utenti lenti, i chip "decode" pochi utenti veloci.
+
+| Modello | Sistema | 76 | 120 | 164 | 250 | 500 | 1000 | 2000 | Fonte |
+|---|---|---|---|---|---|---|---|---|---|
+| DeepSeek R1 671B | GB200 NVL72 | **3.074** | 2.132 | 437 | – | – | – | – | SemiAnalysis InferenceX, 8k/1k |
+| DeepSeek R1 671B | GB300 NVL72 | ~4.150 a bassa interattività (MLPerf server) | | | | | | | MLPerf v6.0 (NVIDIA): 8.064 tok/s/GPU, ~1,95 kW/GPU |
+| DeepSeek 671B | HGX B300 (rack 28 kW) | – | – | – | 102 | 45 | – | – | GC (stima da InferenceX) |
+| DeepSeek 671B | SambaNova SN50 | – | – | – | 1.617 | 842 | 421 | – | GC, benchmark interno |
+| MiniMax M2.7 230B | HGX B300 | – | – | – | 631 | – | – | – | GC |
+| MiniMax M2.7 230B | SambaNova SN50 | – | – | – | 1.432 | 1.200 | 763 | 726 | GC, benchmark interno |
+| MiniMax M2.7 230B | Cerebras CS-3 | – | – | – | – | – | – | 48 | GC |
+| Llama 70B | Positron Atlas | ~675 a 152 tok/s/utente (batch 8) | | | | | | | Positron |
+
+### 5.3 Lettura
+
+- **A velocità normale (chat, API, 50–120 tok/s/utente) l'NVL72 è il migliore** sia in token per kW (circa 2.000–4.000 tok/s/kW su DeepSeek R1) sia in prezzo per kW (circa 30–36 k$/kW, il più basso della tabella). Capitale per unità di produzione: circa 8–10 $ per tok/s.
+- **Sopra circa 150–200 tok/s/utente le GPU crollano** (GB200: da 3.074 a 437 tok/s/kW passando da 76 a 164 tok/s/utente). Lì SN50 dichiara 4–16 volte più token per kW del B300. È il mercato a cui punta GC (agenti, coding).
+- I numeri SN50 e Cerebras sono **benchmark interni di GC**, che rivende quei prodotti; GC pubblica solo velocità da 250 tok/s/utente in su, dove le GPU sono più deboli. Il software delle GPU migliora in fretta: GB300 su DeepSeek R1 in MLPerf è passato da 2.907 a 8.064 tok/s/GPU in un anno.
+- **Per la TLP conta anche la massa**: con 5 MW di NVL72 (268 t) si producono circa 15 milioni di tok/s, circa 56.000 tok/s per tonnellata sul ponte. SN50 a 250 tok/s/utente: circa 8 milioni di tok/s su 868 t, circa 9.300 tok/s per tonnellata.
+- Conclusione: le posizioni rack da 140 kW a liquido restano la scelta giusta. Un tenant che vuole velocità molto alte per utente può usare Cerebras (46 kW, liquido) nelle stesse posizioni; SN50 e Positron restano esclusi per massa e ingombro (§3).
+
+Fonti: [generalcompute.com](https://www.generalcompute.com/) (calcolatore TCO e dati di benchmark nel codice della pagina) · [SemiAnalysis InferenceX](https://inferencex.semianalysis.com/compare/deepseek-r1-b200-vs-gb200) · [NVIDIA, MLPerf](https://developer.nvidia.com/blog/nvidia-extreme-co-design-delivers-new-mlperf-inference-records/) · [Data Gravity, costo NVL72](https://www.datagravity.dev/p/how-much-does-an-nvidia-nvl72-cost) · [Spheron, GB300 vs GB200](https://www.spheron.network/blog/gb300-nvl72-vs-gb200-nvl72-pricing-availability-2026/) · [Positron Atlas](https://positron.ai/atlas).
