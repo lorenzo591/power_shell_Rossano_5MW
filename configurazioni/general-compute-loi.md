@@ -1,6 +1,6 @@
 # Opzioni della LOI General Compute: densità e massa sul ponte da 5 MW
 
-- Revisione: B (2026-10-15). Aggiunta la §5 su prezzi e token per kW.
+- Revisione: C (2026-10-15). Aggiunte la §5 (prezzi e token per kW) e la §6 (costo del token e mercati per velocità).
 - Numeri: [`calcs/risultati-general-compute.md`](../calcs/risultati-general-compute.md), generati da [`calcs/general_compute_loi.py`](../calcs/general_compute_loi.py) con le stesse funzioni di [`dimensionamento_5mw.py`](../calcs/dimensionamento_5mw.py).
 - Dati dei rack: schede prodotto su [generalcompute.com](https://www.generalcompute.com/) (consultato 2026-10-15). Masse dei rack, potenza del rack d-Matrix e quota al liquido Cerebras sono **ipotesi n.v.**
 - Ipotesi di concept, come il resto del repo.
@@ -93,3 +93,50 @@ Dipende soprattutto dalla **velocità per utente** richiesta (tok/s/utente): le 
 - Conclusione: le posizioni rack da 140 kW a liquido restano la scelta giusta. Un tenant che vuole velocità molto alte per utente può usare Cerebras (46 kW, liquido) nelle stesse posizioni; SN50 e Positron restano esclusi per massa e ingombro (§3).
 
 Fonti: [generalcompute.com](https://www.generalcompute.com/) (calcolatore TCO e dati di benchmark nel codice della pagina) · [SemiAnalysis InferenceX](https://inferencex.semianalysis.com/compare/deepseek-r1-b200-vs-gb200) · [NVIDIA, MLPerf](https://developer.nvidia.com/blog/nvidia-extreme-co-design-delivers-new-mlperf-inference-records/) · [Data Gravity, costo NVL72](https://www.datagravity.dev/p/how-much-does-an-nvidia-nvl72-cost) · [Spheron, GB300 vs GB200](https://www.spheron.network/blog/gb300-nvl72-vs-gb200-nvl72-pricing-availability-2026/) · [Positron Atlas](https://positron.ai/atlas).
+
+## 6. Costo del token "a costo" e mercato per velocità
+
+### 6.1 Costo per milione di token di output
+
+Costo mensile per kW IT diviso per i token prodotti in un mese. Ipotesi (le stesse del calcolatore TCO di GC, salvo il PUE):
+
+- Ammortamento hardware 48 mesi, nessun interesse. Energia 0,10 $/kWh (0,20 $/kWh come sensibilità) × PUE 1,07 (`calcs/risultati.md`). Altri costi operativi 3.000 $/rack/mese.
+- **Escluso il costo della powered shell** (TLP, impianti, cavo MT): non ancora stimato in questa fase.
+- Utilizzo 100 % (limite teorico) e 60 % (realistico).
+- Token di output. I dati di GC escludono il prefill; quelli InferenceX e MLPerf lo comprendono.
+- GB300 NVL72: prezzo 4,5 M$ con le prestazioni misurate sul GB200 (InferenceX), quindi stima prudente.
+
+| Sistema e modello | tok/s/utente | tok/s per kW | $/M token, utilizzo 100 % | $/M token, utilizzo 60 % |
+|---|---|---|---|---|
+| NVL72, DeepSeek R1 (MLPerf GB300) | bassa | ~4.150 | 0,07 | 0,12 |
+| NVL72, DeepSeek R1 (InferenceX GB200) | 76 | 3.074 | **0,10** | **0,16** |
+| NVL72, DeepSeek R1 | 120 | 2.132 | 0,14 | 0,23 |
+| NVL72, DeepSeek R1 | 164 | 437 | 0,67 | 1,12 |
+| SN50, DeepSeek 671B (GC) | 250 | 1.617 | 0,47 | 0,78 |
+| SN50, DeepSeek 671B (GC) | 500 | 842 | 0,90 | 1,50 |
+| SN50, DeepSeek 671B (GC) | 1000 | 421 | 1,80 | 3,00 |
+| HGX B300, DeepSeek 671B (GC) | 250 | 102 | 4,0 | 6,7 |
+| HGX B300, DeepSeek 671B (GC) | 500 | 45 | 9,1 | 15,2 |
+| HGX B300, MiniMax 230B (GC) | 250 | 631 | 0,65 | 1,08 |
+| SN50, MiniMax 230B (GC) | 250 / 2000 | 1.432 / 726 | 0,53 / 1,04 | 0,88 / 1,74 |
+| Cerebras, MiniMax 230B (GC) | 2000 | 48 | 10,5 | 17,5 |
+| Positron, Llama 70B (Positron) | 152 | ~675 | 1,28 | 2,13 |
+
+Con l'energia a 0,20 $/kWh i costi salgono del 4–10 %: l'ammortamento dell'hardware pesa molto più dell'energia. Verifica: InferenceX dà 0,090 $/M token per il GB200 a 76 tok/s/utente, coerente con lo 0,095 calcolato qui.
+
+Prezzi di vendita di riferimento (OpenRouter, riportati nel codice di GC), per milione di token di output: DeepSeek 671B 0,43 $ · MiniMax M2.7 1,28 $ · Kimi K2.6 3,60 $ · GLM 5.2 4,28 $.
+
+Il dato Cerebras (48 tok/s per kW) è probabilmente sottostimato: sembra misurato con pochi utenti contemporanei. Da chiedere a GC.
+
+### 6.2 Mercati per velocità
+
+| Fascia (tok/s/utente) | Usi | Sistema più economico | Prezzo e volume |
+|---|---|---|---|
+| < 50 | Lavori batch: documenti, dati sintetici, valutazioni | GPU NVL72 al massimo carico | Prezzo più basso, volumi grandi |
+| 50–150 | Chat, API, copilot (una persona legge 5–10 parole al secondo) | **GPU NVL72** | **Mercato più grande**: prezzi bassi, volumi massimi |
+| 150–500 | Agenti, coding, ragionamento lungo | Chip decode (SN50); GPU in calo | Mercato premium in crescita |
+| 500–2000+ | Catene di agenti, voce in tempo reale | Cerebras, SN50 | Nicchia, prezzo per token alto |
+
+La velocità non è una proprietà del rack ma un punto di lavoro scelto da chi lo gestisce: lo stesso NVL72 può servire 76 tok/s/utente a 0,10 $/M o 164 tok/s/utente a 0,67 $/M.
+
+La TLP con rack NVL72 si colloca nella **fascia 50–150 tok/s/utente**: la "fabbrica di token" a basso costo e grandi volumi. Come powered shell vendiamo kW di potenza; la fascia la sceglie il tenant. Le posizioni a liquido da 140 kW accettano anche Cerebras per la fascia veloce.
