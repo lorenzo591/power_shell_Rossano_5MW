@@ -21,6 +21,11 @@ Deriva dai repository `lorenzo591/powered_shell_container` (150 kW DLC) e `loren
 | Documento | Contenuto |
 |---|---|
 | [`configurazioni/confronto-configurazioni.md`](configurazioni/confronto-configurazioni.md) | Le configurazioni (densità rack, piani, sorgente fredda, ridondanza) e la scelta |
+| [`configurazioni/general-compute-loi.md`](configurazioni/general-compute-loi.md) | Opzioni rack della LOI General Compute: densità, massa sul ponte scomposta, fattibilità |
+| [`mechanical/predesign-tlp-rossano.md`](mechanical/predesign-tlp-rossano.md) | Pre-design della TLP a Rossano: potenza massima su 50 × 50 m, scafo, tendini, limite di profondità, rischi del sito |
+| [`mechanical/tlp-5mw-rossano.md`](mechanical/tlp-5mw-rossano.md) | **TLP minima da 5 MW a Rossano (450 m)**: geometria, verifiche, installazione |
+| [`viewer/tlp-5mw-rossano.html`](viewer/tlp-5mw-rossano.html) | Modello 3D della TLP da 5 MW con le verifiche |
+| [`viewer/tlp-rossano.html`](viewer/tlp-rossano.html) | Modello 3D della variante massima su ponte 50 × 50 m (solo riferimento) |
 | [`electrical/dimensionamento-elettrico.md`](electrical/dimensionamento-elettrico.md) | Potenza, MT, trasformatori, BT, continuità, unifilare concept |
 | [`cooling/dimensionamento-raffreddamento.md`](cooling/dimensionamento-raffreddamento.md) | Catena termica, portate, componenti, presa e scarico |
 | [`mechanical/layout-e-masse.md`](mechanical/layout-e-masse.md) | Layout dei container, masse, baricentro, rimorchio |

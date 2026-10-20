@@ -36,15 +36,15 @@
 
 | ID | Requisito | Valore | Unità | Stato | Fonte / Note |
 |---|---|---|---|---|---|
-| REQ-ENV-001 | Sito | **TBD**: i dati ereditati sono della TLP pilota davanti al porto di Napoli (circa 200 m dalla costa); il nome del repository indica Rossano (Calabria, mar Ionio) | – | TBD | Se il sito è Rossano vanno sostituiti tutti i dati di sito: temperatura del mare, fondale, distanza dalla costa, rete |
-| REQ-ENV-002 | Area utile del ponte | circa 30 × 30 | m | Ipotesi | Cliente, 2026-10-09 ("non più di 30 × 30") |
+| REQ-ENV-001 | Sito | Mar Ionio al largo di Corigliano-Rossano, fondale circa 450 m | – | Ipotesi | Cliente, 2026-10-15. Punto esatto, distanza dalla costa, batimetria e geohazard da rilevare. I dati della TLP pilota di Napoli non valgono più |
+| REQ-ENV-002 | Area utile del ponte | 24 × 24 (TLP minima, soluzione B); massimo 30 × 30 | m | Ipotesi | Cliente, 2026-10-09 ("non più di 30 × 30"); [`mechanical/tlp-5mw-rossano.md`](../mechanical/tlp-5mw-rossano.md) |
 | REQ-ENV-003 | Aria esterna | 0–38 °C, UR fino a 100 % | °C | Ereditato | |
 | REQ-ENV-004 | Corrosività esterna | CX (ISO 12944-2) | – | Ereditato | |
 | REQ-ENV-005 | Mare alla presa a 25 m | massimo 24,7 °C, 99° percentile 23,4 °C, minimo circa 12,7 °C | °C | Ereditato | Dataset Napoli 1987–2023 (da qualificare) |
 | REQ-ENV-006 | Mare alla presa a 50 m | massimo 21,7 °C, 99° percentile 20,2 °C | °C | Ereditato | Stesso dataset |
 | REQ-ENV-007 | Profondità della presa | 25 m (50 m se il fondale lo permette) | m | Ipotesi | |
 | REQ-ENV-008 | Scarico a mare | ≤ 35 °C; ≤ +3 °C a 1000 m | °C | Ereditato | D.Lgs. 152/2006 All. 5 Tab. 3, da verificare con l'autorità |
-| REQ-ENV-009 | Quota del ponte sul mare | circa 5 (esercizio) | m | Ereditato | TLP pilota: da riconfermare |
+| REQ-ENV-009 | Quota del fondo del ponte sul medio mare | 15 | m | Ipotesi | Onda centenaria Hs 8,2 m (boa di Crotone): cresta circa 9,7 m + margini. Sostituisce i 5 m della TLP pilota |
 | REQ-ENV-010 | Moti e accelerazioni in esercizio e rimorchio | Rollio 20°, beccheggio 12,5°, Ay 3,36 m/s², Az 11,54 m/s² (rimorchio) | – | Ereditato | SIZ0PLT001 rev 0, TLP pilota: **da rifare per la TLP da 5 MW** |
 | REQ-ENV-011 | Frequenze proprie della piattaforma | 6,4–17,2 | Hz | Ereditato | Idem |
 | REQ-ENV-012 | Area pericolosa | No (area sicura) | – | Ereditato | |
@@ -61,4 +61,4 @@
 | REQ-MEC-006 | Ritenuta delle apparecchiature | Meccanica positiva, non per attrito | – | Ereditato | |
 | REQ-MEC-007 | Prima frequenza di telaio e armadi | > 1,2 × frequenza massima della piattaforma | Hz | Ereditato | Criterio dei repo precedenti |
 | REQ-MEC-008 | Antincendio | Spegnimento automatico a gas in ogni container | – | Ereditato | |
-| REQ-MEC-009 | Installazione | In banchina, con la TLP in porto | – | Ipotesi | Evita la certificazione per il sollevamento in mare |
+| REQ-MEC-009 | Installazione | **Da decidere**: (A) topside montato in banchina e rimorchio integrato, scafo 5.900 t; (B) scafo e tendini prima, ponte e container sollevati in mare, scafo 3.400 t | – | TBD | [`mechanical/tlp-5mw-rossano.md`](../mechanical/tlp-5mw-rossano.md) §5 |
