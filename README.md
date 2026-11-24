@@ -21,6 +21,7 @@ Deriva dai repository `lorenzo591/powered_shell_container` (150 kW DLC) e `loren
 | Documento | Contenuto |
 |---|---|
 | [`configurazioni/confronto-configurazioni.md`](configurazioni/confronto-configurazioni.md) | Le configurazioni (densità rack, piani, sorgente fredda, ridondanza) e la scelta |
+| [`configurazioni/analisi-nvidia-pod.md`](configurazioni/analisi-nvidia-pod.md) | NVIDIA POD (DGX SuperPOD / NVL72) sulla shell: idoneità, punti aperti, domande per NVIDIA e OEM |
 | [`electrical/dimensionamento-elettrico.md`](electrical/dimensionamento-elettrico.md) | Potenza, MT, trasformatori, BT, continuità, unifilare concept |
 | [`cooling/dimensionamento-raffreddamento.md`](cooling/dimensionamento-raffreddamento.md) | Catena termica, portate, componenti, presa e scarico |
 | [`mechanical/layout-e-masse.md`](mechanical/layout-e-masse.md) | Layout dei container, masse, baricentro, rimorchio |
